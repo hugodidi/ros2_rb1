@@ -1,1 +1,6 @@
 .vscode
+
+install/
+build/
+log/
+__pycache__/

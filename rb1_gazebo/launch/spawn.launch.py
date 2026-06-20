@@ -16,13 +16,11 @@
 
 import os
 from ament_index_python import get_package_share_directory
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, ExecuteProcess
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from launch import LaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.actions import RegisterEventHandler
-from launch.event_handlers import OnProcessExit
 
 
 def generate_launch_description():
@@ -64,30 +62,6 @@ def generate_launch_description():
         output="screen"
     )
 
-    load_diff_drive_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", "active",
-             "diff_drive_base_controller"],
-        output="screen"
-    )
-
-    load_joint_state_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", "active",
-             "joint_state_broadcaster"],
-        output="screen"
-    )
-
-    load_torso_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", "active",
-             "torso_controller"],
-        output="screen"
-    )
-
-    load_head_controller = ExecuteProcess(
-        cmd=["ros2", "control", "load_controller", "--set-state", "active",
-             "head_controller"],
-        output="screen"
-    )
-
     # LAUNCHES ###
     robot_state_publisher_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -103,25 +77,6 @@ def generate_launch_description():
     ld.add_action(initial_pose_y_cmd)
     ld.add_action(initial_pose_z_cmd)
     ld.add_action(initial_pose_yaw_cmd)
-
-    ld.add_action(RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=spawn_entity_cmd,
-            on_exit=[load_joint_state_controller],
-        )
-    ))
-    ld.add_action(RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=load_joint_state_controller,
-            on_exit=[load_diff_drive_controller],
-        )
-    ))
-    ld.add_action(RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=load_diff_drive_controller,
-            on_exit=[load_head_controller, load_torso_controller],
-        )
-    ))
 
     ld.add_action(spawn_entity_cmd)
     ld.add_action(robot_state_publisher_cmd)

@@ -11,9 +11,6 @@ controller_manager:
     torso_controller:
       type: position_controllers/JointGroupPositionController
 
-    head_controller:
-      type: position_controllers/JointGroupPositionController
-
 diff_drive_base_controller:
   ros__parameters:
     left_wheel_names: [left_wheel_joint]
@@ -66,18 +63,6 @@ torso_controller:
   ros__parameters:
     joints:
       - j1_torso
-    interface_name: position
-    command_interfaces:
-      - position
-    state_interfaces:
-      - position
-      - velocity
-      - effort
-
-head_controller:
-  ros__parameters:
-    joints:
-      - j2_head
     interface_name: position
     command_interfaces:
       - position
