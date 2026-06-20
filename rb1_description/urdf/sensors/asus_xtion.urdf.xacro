@@ -54,7 +54,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
 
     <joint name="camera_frame_joint" type="fixed">
-      <origin xyz="0 0 0" rpy="-${math_pi_over_2} 0 -${math_pi_over_2}" />
+      <origin xyz="0.000 0.000 0.000" rpy="0 0 0" />
       <parent link="${prefix}_link" />
       <child link="camera_frame" />
     </joint>

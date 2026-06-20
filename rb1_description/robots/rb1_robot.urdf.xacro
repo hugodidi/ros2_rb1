@@ -67,18 +67,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
       <state_interface name="effort"/>
     </joint>
 
-    <joint name="j1_head">
-      <command_interface name="position">
-        <param name="min">-3.14159</param>
-        <param name="max">3.14159</param>
-      </command_interface>
-      <state_interface name="position">
-        <param name="initial_value">0.0</param>
-      </state_interface>
-      <state_interface name="velocity"/>
-      <state_interface name="effort"/>
-    </joint>
-
     <joint name="j2_head">
       <command_interface name="position">
         <param name="min">-3.14159</param>

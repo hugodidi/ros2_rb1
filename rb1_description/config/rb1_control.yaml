@@ -77,7 +77,6 @@ torso_controller:
 head_controller:
   ros__parameters:
     joints:
-      - j1_head
       - j2_head
     interface_name: position
     command_interfaces:

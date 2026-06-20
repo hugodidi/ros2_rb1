@@ -174,13 +174,10 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
     </collision>
   </link>
 
-  <joint name="j1_head" type="revolute">
+  <joint name="j1_head" type="fixed">
     <origin xyz="0.010 0.0 0.940" rpy="0 0 0" />
     <parent link="torso_front_link" />    
     <child link="head_link" />
-    <axis xyz="0 0 1" />
-    <limit effort="${joint_effort_limit}" velocity="${joint_velocity_limit}" upper="${PI/2}" lower="${-PI/2}"/>
-    <dynamics damping="${joint_damping}" friction="${joint_friction}"/>
   </joint>
 
   <transmission name="j1_head_trans">
