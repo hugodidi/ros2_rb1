@@ -1,0 +1,277 @@
+<?xml version="1.0" ?>
+<robot name="mic_array" xmlns:xacro="http://ros.org/wiki/xacro">
+    <xacro:macro name="mic_array" params="name parent">
+        <joint name="${name}_joint" type="fixed">
+            <origin xyz="0.0 0.06 0.05" rpy="0.0 0.0 0.0"/>
+            <parent link="${parent}"/>
+            <child link="${name}_link"/>
+        </joint>
+        <link name="${name}_link">
+            <inertial>
+                <origin xyz="0.06 0.13 0.0" rpy="0.0 0.0 0.0"/>
+                <mass value="0.04"/>
+                <inertia ixx="0.00000429247" ixy="0.00000000000" ixz="0.00000002565" iyy="0.00000008027" iyz="0.00000000000" izz="0.00000427339"/>
+            </inertial>
+            <visual>
+                <geometry>
+                    <cylinder radius="0.05" length="0.002"/>  <!-- Ajusta el radio y grosor -->
+                </geometry>
+                <material name="navy_blue">
+                    <color rgba="0.0 0.0 0.5 1.0"/>
+                </material>
+            </visual>
+        </link>
+        <link name="mic_1">
+            <visual>
+            <geometry>
+                <box size="0.01 0.01 0.002"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+            </visual>
+        </link>
+        <joint name="mic_1_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="mic_1"/>
+            <origin rpy="0 0 2.36" xyz="-0.0405 0.0000 0.001"/>
+        </joint>
+        <link name="mic_2">
+            <visual>
+            <geometry>
+                <box size="0.01 0.01 0.002"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+            </visual>
+        </link>
+        <joint name="mic_2_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="mic_2"/>
+            <origin rpy="0 0 0.79" xyz="0.0000 0.0405 0.001"/>
+        </joint>
+        <link name="mic_3">
+            <visual>
+            <geometry>
+                <box size="0.01 0.01 0.002"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+            </visual>
+        </link>
+        <joint name="mic_3_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="mic_3"/>
+            <origin rpy="0 0 -0.79" xyz="0.0405 0.0000 0.001"/>
+        </joint>
+        <link name="mic_4">
+            <visual>
+            <geometry>
+                <box size="0.01 0.01 0.002"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1.0"/>
+            </material>
+            </visual>
+        </link>
+        <joint name="mic_4_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="mic_4"/>
+            <origin rpy="0 0 3.93" xyz="0.0000 -0.0405 0.001"/>
+        </joint>
+        <link name="led_1">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 1.97" xyz="-0.0303 0.0091 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_1_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_1"/>
+            <origin rpy="0 0 1.97" xyz="-0.0303 0.0091 0.0000"/>
+        </joint>
+        <link name="led_2">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 1.58" xyz="-0.0221 0.0221 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_2_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_2"/>
+            <origin rpy="0 0 1.58" xyz="-0.0221 0.0221 0.0000"/>
+        </joint>
+        <link name="led_3">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 1.19" xyz="-0.0091 0.0303 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_3_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_3"/>
+            <origin rpy="0 0 1.19" xyz="-0.0091 0.0303 0.0000"/>
+        </joint>
+        <link name="led_4">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 0.4" xyz="0.0091 0.0303 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_4_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_4"/>
+            <origin rpy="0 0 0.4" xyz="0.0091 0.0303 0.0000"/>
+        </joint>
+        <link name="led_5">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 0.01" xyz="0.0221 0.0221 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_5_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_5"/>
+            <origin rpy="0 0 0.01" xyz="0.0221 0.0221 0.0000"/>
+        </joint>
+        <link name="led_6">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 -0.4" xyz="0.0303 0.0091 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_6_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_6"/>
+            <origin rpy="0 0 -0.4" xyz="0.0303 0.0091 0.0000"/>
+        </joint>
+        <link name="led_7">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 -1.16" xyz="0.0303 -0.0091 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_7_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_7"/>
+            <origin rpy="0 0 -1.16" xyz="0.0303 -0.0091 0.0000"/>
+        </joint>
+        <link name="led_8">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 -1.55" xyz="0.0221 -0.0221 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_8_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_8"/>
+            <origin rpy="0 0 -1.55" xyz="0.0221 -0.0221 0.0000"/>
+        </joint>
+        <link name="led_9">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 -1.94" xyz="0.0091 -0.0303 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_9_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_9"/>
+            <origin rpy="0 0 -1.94" xyz="0.0091 -0.0303 0.0000"/>
+        </joint>
+        <link name="led_10">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 3.53" xyz="-0.0091 -0.0303 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_10_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_10"/>
+            <origin rpy="0 0 3.53" xyz="-0.0091 -0.0303 0.0000"/>
+        </joint>
+        <link name="led_11">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 3.14" xyz="-0.0221 -0.0221 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_11_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_11"/>
+            <origin rpy="0 0 3.14" xyz="-0.0221 -0.0221 0.0000"/>
+        </joint>
+        <link name="led_12">
+            <visual>
+            <geometry>
+                <sphere radius="0.003"/>
+            </geometry>
+            <material name="blue">
+                <color rgba="0.6 0.8 1.0 1.0"/>  <!-- Azul marino -->
+            </material>
+            <!-- <origin rpy="0 0 2.75" xyz="-0.0303 -0.0091 0.0000"/> -->
+            </visual>
+        </link>
+        <joint name="led_12_joint" type="fixed">
+            <parent link="${name}_link"/>
+            <child link="led_12"/>
+            <origin rpy="0 0 2.75" xyz="-0.0303 -0.0091 0.0000"/>
+        </joint>
+    </xacro:macro>
+</robot>

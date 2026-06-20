@@ -25,5 +25,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>. -->
 
   <!-- Hokuyo -->
   <xacro:include filename="$(find rb1_description)/urdf/sensors/asus_xtion.urdf.xacro" /> 
+
+  <xacro:include filename="$(find rb1_description)/urdf/sensors/mic_array.urdf.xacro" /> 
   
 </robot>
