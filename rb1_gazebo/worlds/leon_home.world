@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ASCII"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <sdf version="1.7">
   <world name="LeonHome">
     <model name="ground_plane">
@@ -24,6 +24,18 @@
       <pose>-3.2 -0.3 0.01 0 0 0.27</pose>
 
       <plugin name="ActorCmdVelPlugin" filename="libActorCmdVelPlugin.so">
+        <cmd_vel_topic>/actor/cmd_vel</cmd_vel_topic>
+        <max_linear_vel>1.0</max_linear_vel>
+        <max_angular_vel>1.0</max_angular_vel>
+        <!-- Offset de heading: el modelo de Fuel tiene al personaje mirando
+             hacia el eje +Y del actor, mientras que Gazebo toma yaw=0 como +X.
+             Con PI/2, linear.x del teleop se alinea con la dirección visual de
+             avance (I = adelante, , = atrás). -->
+        <heading_offset>1.57079632679</heading_offset>
+        <!-- Offset del centro de rotación respecto al origen del actor.
+             Permite girar alrededor del centro visual de la caja que contiene
+             al personaje en lugar de hacerlo sobre un borde del modelo. -->
+        <rotation_center_offset>0.0 0.0 0.0</rotation_center_offset>
       </plugin>
     </actor>
 
