@@ -25,6 +25,7 @@
 
       <plugin name="ActorCmdVelPlugin" filename="libActorCmdVelPlugin.so">
         <cmd_vel_topic>/actor/cmd_vel</cmd_vel_topic>
+        <set_pose_topic>/world/LeonHome/set_pose</set_pose_topic>
         <max_linear_vel>1.0</max_linear_vel>
         <max_angular_vel>1.0</max_angular_vel>
         <!-- Offset de heading: el modelo de Fuel tiene al personaje mirando

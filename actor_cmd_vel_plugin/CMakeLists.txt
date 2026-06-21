@@ -5,7 +5,9 @@ set(CMAKE_CXX_STANDARD 17)
 
 
 find_package(ignition-gazebo6 REQUIRED)
+find_package(ignition-msgs8 REQUIRED)
 find_package(ignition-plugin1 REQUIRED COMPONENTS register)
+find_package(ignition-transport11 REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(geometry_msgs REQUIRED)
 
@@ -25,7 +27,9 @@ ament_target_dependencies(ActorCmdVelPlugin
 
 target_link_libraries(ActorCmdVelPlugin
   ignition-gazebo6::core
+  ignition-msgs8::core
   ignition-plugin1::ignition-plugin1
+  ignition-transport11::core
 )
 
 install(TARGETS ActorCmdVelPlugin

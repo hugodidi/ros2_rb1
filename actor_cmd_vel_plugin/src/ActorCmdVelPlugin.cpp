@@ -2,9 +2,12 @@
 #include <gz/plugin/Register.hh>
 #include <gz/sim/System.hh>
 #include <ignition/gazebo/System.hh>
+#include <ignition/gazebo/components/Name.hh>
 #include <ignition/gazebo/components/Pose.hh>
 #include <ignition/math/Quaternion.hh>
 #include <ignition/math/Vector3.hh>
+#include <ignition/msgs/pose.pb.h>
+#include <ignition/transport/Node.hh>
 #include <mutex>
 #include <rclcpp/executors/single_threaded_executor.hpp>
 #include <rclcpp/rclcpp.hpp>
@@ -29,6 +32,7 @@ public:
 
     // Leer parámetros del SDF.
     this->cmdVelTopic = "/actor/cmd_vel";
+    this->setPoseTopic = "/world/LeonHome/set_pose";
     this->maxLinearVel = 1.0;
     this->maxAngularVel = 1.0;
     this->rotationCenterOffset = ignition::math::Vector3d::Zero;
@@ -40,6 +44,9 @@ public:
     if (_sdf) {
       if (_sdf->HasElement("cmd_vel_topic")) {
         this->cmdVelTopic = _sdf->Get<std::string>("cmd_vel_topic");
+      }
+      if (_sdf->HasElement("set_pose_topic")) {
+        this->setPoseTopic = _sdf->Get<std::string>("set_pose_topic");
       }
       if (_sdf->HasElement("max_linear_vel")) {
         this->maxLinearVel = _sdf->Get<double>("max_linear_vel");
@@ -55,6 +62,13 @@ public:
         this->headingOffset = _sdf->Get<double>("heading_offset");
       }
     }
+
+    auto nameComp = _ecm.Component<components::Name>(this->actorEntity);
+    if (nameComp) {
+      this->actorName = nameComp->Data();
+    }
+    this->posePub = this->gzNode.Advertise<ignition::msgs::Pose>(
+        this->setPoseTopic);
 
     rclcpp::init(0, nullptr);
     this->node = std::make_shared<rclcpp::Node>("actor_cmd_vel_node");
@@ -88,10 +102,13 @@ public:
     });
 
     RCLCPP_INFO(this->node->get_logger(),
-                "Plugin configurado. topic=%s max_linear=%.2f max_angular=%.2f "
-                "heading_offset=%.3f rotation_center_offset=(%.3f, %.3f, %.3f)",
-                this->cmdVelTopic.c_str(), this->maxLinearVel,
-                this->maxAngularVel, this->headingOffset,
+                "Plugin configurado. actor=%s topic=%s set_pose=%s "
+                "max_linear=%.2f max_angular=%.2f heading_offset=%.3f "
+                "rotation_center_offset=(%.3f, %.3f, %.3f)",
+                this->actorName.c_str(),
+                this->cmdVelTopic.c_str(), this->setPoseTopic.c_str(),
+                this->maxLinearVel, this->maxAngularVel,
+                this->headingOffset,
                 this->rotationCenterOffset.X(),
                 this->rotationCenterOffset.Y(),
                 this->rotationCenterOffset.Z());
@@ -162,11 +179,33 @@ public:
         newPos, ignition::math::Quaterniond(0, 0, newYaw));
 
     _ecm.SetComponentData<components::Pose>(this->actorEntity, newPose);
+    this->PublishPoseToGazebo(newPose);
   }
 
-  ~ActorCmdVelPlugin() { rclcpp::shutdown(); }
+  ~ActorCmdVelPlugin() {
+    if (this->executor) {
+      this->executor->cancel();
+    }
+    rclcpp::shutdown();
+    if (this->rosThread.joinable()) {
+      this->rosThread.join();
+    }
+  }
 
 private:
+  void PublishPoseToGazebo(const ignition::math::Pose3d &pose) {
+    ignition::msgs::Pose msg;
+    msg.set_name(this->actorName);
+    msg.mutable_position()->set_x(pose.Pos().X());
+    msg.mutable_position()->set_y(pose.Pos().Y());
+    msg.mutable_position()->set_z(pose.Pos().Z());
+    msg.mutable_orientation()->set_x(pose.Rot().X());
+    msg.mutable_orientation()->set_y(pose.Rot().Y());
+    msg.mutable_orientation()->set_z(pose.Rot().Z());
+    msg.mutable_orientation()->set_w(pose.Rot().W());
+    this->posePub.Publish(msg);
+  }
+
   std::shared_ptr<rclcpp::Node> node;
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmdVelSub;
   ignition::math::Vector3d linearVel{0, 0, 0};
@@ -178,6 +217,10 @@ private:
   std::thread rosThread;
 
   std::string cmdVelTopic{"/actor/cmd_vel"};
+  std::string setPoseTopic{"/world/LeonHome/set_pose"};
+  std::string actorName{"actor_gesture"};
+  ignition::transport::Node gzNode;
+  ignition::transport::Node::Publisher posePub;
   double maxLinearVel{1.0};
   double maxAngularVel{1.0};
   double headingOffset{0.0};
